@@ -1,4 +1,3 @@
-```mermaid
 ### Justificación del Diseño UML
 
 **1. Uso de Composición en Pedidos y Clientes:**
@@ -10,6 +9,7 @@ Se utilizó la **herencia** (flecha de generalización) para aplicar el principi
 **3. Impacto al eliminar un Pedido en el sistema:**
 Según las relaciones trazadas en este diseño, si se elimina un objeto `Pedido`, se desencadenará una eliminación en cascada de sus `DetallePedido`, de su `Envio` y de su `Pago` (ya que dependen directamente de él). Sin embargo, el objeto `Cliente` y el objeto `Producto` del catálogo permanecerán completamente intactos, ya que su relación con el pedido es de simple asociación (el producto sigue existiendo en la tienda aunque el pedido se cancele).
 
+```mermaid
 classDiagram
     %% 1. Clientes y cuentas
     Cliente "1" *-- "1" Cuenta : Posee (Composición)
