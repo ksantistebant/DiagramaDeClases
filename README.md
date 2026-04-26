@@ -88,3 +88,14 @@ classDiagram
         +String transportista
         +String estado
     }
+
+### Justificación del Diseño UML
+
+**1. Uso de Composición en Pedidos y Clientes:**
+Se aplicó una relación de **composición** (rombo relleno) entre `Pedido` y `DetallePedido`, y entre `Cliente` y `Cuenta`. Esto se debe a que existe una dependencia de vida estricta. Un "detalle de pedido" (ej. 2 camisas) no tiene ningún sentido lógico ni puede existir en la base de datos sin estar amarrado a un "pedido" general. Si la clase padre muere, sus partes mueren con ella.
+
+**2. Uso de Herencia en Productos y Pagos:**
+Se utilizó la **herencia** (flecha de generalización) para aplicar el principio de reutilización (DRY). Todos los productos comparten atributos base como `nombre` y `precio`, pero solo los físicos requieren logística (`peso`, `dimensiones`), mientras que los digitales requieren enlaces (`licencia`). Al usar herencia, centralizamos los datos comunes en la clase padre y delegamos los datos específicos a las clases hijas. La misma lógica de eficiencia se aplicó a los métodos de pago.
+
+**3. Impacto al eliminar un Pedido en el sistema:**
+Según las relaciones trazadas en este diseño, si se elimina un objeto `Pedido`, se desencadenará una eliminación en cascada de sus `DetallePedido`, de su `Envio` y de su `Pago` (ya que dependen directamente de él). Sin embargo, el objeto `Cliente` y el objeto `Producto` del catálogo permanecerán completamente intactos, ya que su relación con el pedido es de simple asociación (el producto sigue existiendo en la tienda aunque el pedido se cancele).
