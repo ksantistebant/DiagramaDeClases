@@ -1,131 +1,90 @@
+```mermaid
 classDiagram
-    %% 1. RELACIONES DE USUARIOS
-    %% Composición: Si el cliente desaparece, su cuenta también.
-    Cliente "1" *-- "1" Cuenta : Posee
+    %% 1. Clientes y cuentas
+    Cliente "1" *-- "1" Cuenta : Posee (Composición)
     Cliente "1" --> "*" Pedido : Realiza
 
-    %% 2. RELACIONES DE CATÁLOGO
-    %% Agregación: La categoría agrupa productos, pero los productos son independientes.
-    Categoria "1" o-- "*" Producto : Agrupa
-    %% Herencia: Tipos de productos
-    Producto <|-- ProductoFisico : Es un
-    Producto <|-- ProductoDigital : Es un
+    %% 2. Productos y catálogo
+    Categoria "1" o-- "*" Producto : Agrupa (Agregación)
+    Producto <|-- ProductoFisico : Herencia
+    Producto <|-- ProductoDigital : Herencia
 
-    %% 3. RELACIONES DE VENTAS Y ENVÍOS
-    %% Composición: Un detalle de pedido no tiene sentido sin el pedido general.
-    Pedido "1" *-- "*" DetallePedido : Contiene
+    %% 3. Pedidos
+    Pedido "1" *-- "*" DetallePedido : Contiene (Composición)
     DetallePedido "*" --> "1" Producto : Incluye
-    Pedido "1" --> "1" Envio : Requiere
+    Pedido "1" --> "0..1" Envio : Genera (Solo físicos)
 
-    %% 4. RELACIONES DE PAGOS
-    Pedido "1" --> "1" Pago : Genera
-    %% Herencia: Tipos de pagos
-    Pago <|-- PagoTarjeta : Es un
-    Pago <|-- PagoTransferencia : Es un
-    Pago <|-- PagoEfectivo : Es un
+    %% 4. Pagos
+    Pedido "1" --> "1" Pago : Tiene
+    Pago <|-- PagoTarjeta : Herencia
+    Pago <|-- PagoTransferencia : Herencia
+    Pago <|-- PagoEfectivo : Herencia
 
-    %% DEFINICIÓN DE CLASES Y ATRIBUTOS
     class Cliente {
-        +int id_cliente
         +String nombre
-        +String direccion
-        +String email
+        +String correo_electronico
         +String telefono
-        +actualizarPerfil()
-        +realizarPedido()
     }
 
     class Cuenta {
         +String usuario
         +String contrasena
-        +Date fecha_registro
-        +boolean estado_activa
-        +iniciarSesion()
-        +cerrarSesion()
-        +restablecerClave()
-    }
-
-    class Categoria {
-        +int id_categoria
-        +String nombre
-        +String descripcion
-        +agregarProducto()
-        +mostrarProductos()
+        +Date fecha_creacion
     }
 
     class Producto {
-        +int id_producto
+        +String codigo
         +String nombre
-        +float precio_base
-        +String descripcion
-        +obtenerPrecio()
-        +actualizarInfo()
+        +float precio
+        +int stock
+    }
+
+    class ProductoDigital {
+        +float tamano_MBytes
+        +String licencia
     }
 
     class ProductoFisico {
         +float peso
         +String dimensiones
-        +float costo_flete
-        +calcularEnvio()
     }
 
-    class ProductoDigital {
-        +float tamano_archivo
-        +String formato
-        +String enlace_descarga
-        +generarEnlace()
+    class Categoria {
+        +String nombre
     }
 
     class Pedido {
-        +int id_pedido
         +Date fecha
         +String estado
         +float total
-        +calcularTotal()
-        +confirmar()
-        +cancelar()
     }
 
     class DetallePedido {
         +int cantidad
-        +float precio_unitario
-        +float subtotal
-        +calcularSubtotal()
-    }
-
-    class Envio {
-        +int id_envio
-        +String empresa_transporte
-        +String numero_rastreo
-        +String estado_entrega
-        +actualizarEstado()
-        +rastrear()
+        +float precio
     }
 
     class Pago {
-        +int id_pago
         +float monto
         +Date fecha
         +String estado
-        +procesarPago()
     }
 
     class PagoTarjeta {
         +String numero_tarjeta
-        +String fecha_expiracion
-        +String titular
-        +autorizarConBanco()
     }
 
     class PagoTransferencia {
-        +String banco_origen
-        +String numero_cuenta
-        +String codigo_referencia
-        +verificarDeposito()
+        +String cuenta_origen
     }
 
     class PagoEfectivo {
         +float monto_entregado
-        +float cambio
-        +calcularCambio()
+    }
+
+    class Envio {
+        +String direccion
+        +Date fecha
+        +String transportista
+        +String estado
     }
