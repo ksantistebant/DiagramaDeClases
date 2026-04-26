@@ -35,12 +35,16 @@ classDiagram
         +String nombre
         +String correo_electronico
         +String telefono
+        +actualizarPerfil()
+        +realizarPedido()
     }
 
     class Cuenta {
         +String usuario
         +String contrasena
         +Date fecha_creacion
+        +iniciarSesion()
+        +cerrarSesion()
     }
 
     class Producto {
@@ -48,49 +52,60 @@ classDiagram
         +String nombre
         +float precio
         +int stock
+        +actualizarStock()
     }
 
     class ProductoDigital {
         +float tamano_MBytes
         +String licencia
+        +generarEnlace()
     }
 
     class ProductoFisico {
         +float peso
         +String dimensiones
+        +calcularFlete()
     }
 
     class Categoria {
         +String nombre
+        +mostrarProductos()
     }
 
     class Pedido {
         +Date fecha
         +String estado
         +float total
+        +calcularTotal()
+        +cambiarEstado()
     }
 
     class DetallePedido {
         +int cantidad
         +float precio
+        +calcularSubtotal()
     }
 
     class Pago {
         +float monto
         +Date fecha
         +String estado
+        +procesarPago()
     }
 
     class PagoTarjeta {
         +String numero_tarjeta
+        +autorizarConBanco()
     }
 
     class PagoTransferencia {
         +String cuenta_origen
+        +verificarDeposito()
     }
 
     class PagoEfectivo {
         +float monto_entregado
+        +calcularCambio()
     }
 
     class Envio {
@@ -98,4 +113,5 @@ classDiagram
         +Date fecha
         +String transportista
         +String estado
+        +actualizarRastreo()
     }
